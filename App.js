@@ -17,13 +17,13 @@ export default function App() {
       </View>
       <View style={styles.topRow}>
         <TouchableOpacity style={styles.navButton}>
-          <Text>Home</Text>
+          <Text style={styles.textButtons}>Home</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.navButton}>
-          <Text>Contact Us</Text>
+          <Text style={styles.textButtons}>Contact Us</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.navButton}>
-          <Text>Appointment</Text>
+          <Text style={styles.textButtons}>Appointment</Text>
         </TouchableOpacity>
         <TextInput
           placeholder="Search"
@@ -49,6 +49,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  textButtons: {
+    color: "white",
+    fontWeight: "bold",
+    fontSize: 20,
+  },
   banner: {
     paddingTop: 20,
     paddingBottom: 20,
@@ -59,26 +64,37 @@ const styles = StyleSheet.create({
     gridGap: 10,
     alignItems: "center",
     padding: 10,
+    backgroundColor: "#c33",
+    width: "100%",
+    marginBottom: "3%",
   },
   middleRow: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "lightgray",
+    marginBottom: "3%",
+    width: "50%",
   },
   bottomRow: {
     padding: 10,
     paddingBottom: 100,
+    backgroundColor: "lightgray",
+    marginBottom: "3%",
+    width: "50%",
   },
   navButton: {
-    backgroundColor: "blue",
+    backgroundColor: "#c33",
     padding: 10,
     borderRadius: 5,
     alignItems: "center",
   },
   searchInput: {
     height: 25,
-    borderColor: "black",
+    borderColor: "white",
     borderWidth: 1,
     paddingLeft: 15,
+    backgroundColor: "white",
+    borderRadius: 8,
   },
 });
