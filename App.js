@@ -16,6 +16,7 @@ export default function App() {
         <Text>Banner</Text>
       </View>
       <View style={styles.topRow}>
+        <Text style={styles.logoImage}>LogoImage</Text>
         <TouchableOpacity style={styles.navButton}>
           <Text style={styles.textButtons}>Home</Text>
         </TouchableOpacity>
@@ -49,6 +50,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  logoImage: {
+    color: "Black",
+    fontWeight: "bold",
+    fontSize: 20,
+    marginLeft: 100,
+    backgroundColor: "white",
+  },
   textButtons: {
     color: "white",
     fontWeight: "bold",
@@ -60,13 +68,14 @@ const styles = StyleSheet.create({
   },
   topRow: {
     display: "grid",
-    gridTemplateColumns: "1fr 1fr 1fr auto",
+    gridTemplateColumns: "2fr 2fr 2fr 2fr 0.5fr",
     gridGap: 10,
     alignItems: "center",
     padding: 10,
     backgroundColor: "#c33",
     width: "100%",
     marginBottom: "3%",
+    height: 75,
   },
   middleRow: {
     flex: 1,
@@ -96,5 +105,6 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     backgroundColor: "white",
     borderRadius: 8,
+    marginRight: 100,
   },
 });
