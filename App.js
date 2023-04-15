@@ -56,6 +56,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginLeft: 100,
     backgroundColor: "white",
+    paddingLeft: 80,
   },
   textButtons: {
     color: "white",
@@ -86,8 +87,9 @@ const styles = StyleSheet.create({
     width: "50%",
   },
   bottomRow: {
-    padding: 10,
-    paddingBottom: 100,
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
     backgroundColor: "lightgray",
     marginBottom: "3%",
     width: "50%",
