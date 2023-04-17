@@ -6,6 +6,7 @@ import {
   View,
   TextInput,
   TouchableOpacity,
+  Image,
   ScrollView,
 } from "react-native";
 
@@ -16,7 +17,10 @@ export default function App() {
         <Text>Banner</Text>
       </View>
       <View style={styles.topRow}>
-        <Text style={styles.logoImage}>LogoImage</Text>
+        <Image
+          style={styles.logoImage}
+          source={require("./karate-kid-logo-6.png")}
+        />
         <TouchableOpacity style={styles.navButton}>
           <Text style={styles.textButtons}>Home</Text>
         </TouchableOpacity>
