@@ -10,8 +10,7 @@ import {
   ScrollView,
   Dimensions,
 } from "react-native";
-
-const screenHeight = Dimensions.get("screen").height;
+import logo from "./assets/clipart-kids-tiger-15.png";
 
 export default function App() {
   const [email, setEmail] = useState("");
@@ -30,10 +29,7 @@ export default function App() {
 
       {/*this is where we will have the top row which will contain all the usefull infor like home, the logo, contact us, appointments */}
       <View style={styles.topRow}>
-        <Image
-          style={styles.logoImage}
-          source={require("./karate-kid-logo-6.png")}
-        />
+        <Image source={require("./assets/favicon.png")} alt="sum" />
         <TouchableOpacity style={styles.navButton}>
           <Text style={styles.textButtons}>Home</Text>
         </TouchableOpacity>
@@ -48,9 +44,13 @@ export default function App() {
           style={styles.searchInput}
           defaultValue="Search"
         />
+        <TouchableOpacity>
+          <Text>search</Text>
+        </TouchableOpacity>
       </View>
 
       {/*this is where we have the book appointment with the calendar and all that stuff */}
+
       <View style={styles.middleRow}>
         <Text>Book Appointment</Text>
       </View>
@@ -91,6 +91,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+    //use if you want to change the screen height
+    height: "150%",
   },
 
   logoImage: {
@@ -115,14 +117,14 @@ const styles = StyleSheet.create({
 
   topRow: {
     display: "grid",
-    gridTemplateColumns: "2fr 2fr 2fr 2fr 0.5fr",
+    gridTemplateColumns: "2fr 2fr 2fr 2fr 0.5fr 0.5fr",
     gridGap: 10,
     alignItems: "center",
     padding: 10,
     backgroundColor: "#c33",
     width: "100%",
     marginBottom: "3%",
-    height: 75,
+    height: 90,
   },
 
   middleRow: {
@@ -142,7 +144,7 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: "#c33",
     width: "100%",
-    height: "30%",
+    height: "20%",
     /*
     flex: 1,
     justifyContent: "center",
@@ -157,7 +159,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     color: "white",
     width: "80%",
-    marginLeft: 90,
+    marginLeft: 100,
     fontSize: 20,
   },
 
@@ -214,6 +216,6 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     backgroundColor: "white",
     borderRadius: 8,
-    marginRight: 100,
+    marginRight: 0,
   },
 });
