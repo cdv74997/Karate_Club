@@ -7,10 +7,8 @@ import {
   TextInput,
   TouchableOpacity,
   Image,
-  ScrollView,
-  Dimensions,
+  TouchableWithoutFeedback,
 } from "react-native";
-import logo from "./assets/clipart-kids-tiger-15.png";
 
 export default function App() {
   const [email, setEmail] = useState("");
@@ -20,6 +18,12 @@ export default function App() {
     //reset the input field
     setEmail("");
   };
+
+  const TouchableImage = ({ onPress, source, style }) => (
+    <TouchableWithoutFeedback onPress={onPress}>
+      <Image source={source} style={styles} />
+    </TouchableWithoutFeedback>
+  );
   return (
     <View style={styles.container}>
       {/*this is where we have like images that play like a slideshow */}
@@ -29,7 +33,17 @@ export default function App() {
 
       {/*this is where we will have the top row which will contain all the usefull infor like home, the logo, contact us, appointments */}
       <View style={styles.topRow}>
-        <Image source={require("./assets/favicon.png")} alt="sum" />
+        <Image
+          source={require("./assets/R.png")}
+          alt="sum"
+          style={{
+            background: "white",
+            width: 175,
+            height: 150,
+            borderRadius: 0,
+            marginLeft: 180,
+          }}
+        />
         <TouchableOpacity style={styles.navButton}>
           <Text style={styles.textButtons}>Home</Text>
         </TouchableOpacity>
@@ -44,9 +58,11 @@ export default function App() {
           style={styles.searchInput}
           defaultValue="Search"
         />
-        <TouchableOpacity>
-          <Text>search</Text>
-        </TouchableOpacity>
+        <TouchableImage
+          onPress={() => console.log("Image presssed")}
+          source={require("./assets/search.jpg")}
+          style={{ backgroundColor: "white", width: 100, height: 100 }}
+        />
       </View>
 
       {/*this is where we have the book appointment with the calendar and all that stuff */}
@@ -95,15 +111,6 @@ const styles = StyleSheet.create({
     height: "150%",
   },
 
-  logoImage: {
-    color: "Black",
-    fontWeight: "bold",
-    fontSize: 20,
-    marginLeft: 100,
-    backgroundColor: "white",
-    paddingLeft: 80,
-  },
-
   textButtons: {
     color: "white",
     fontWeight: "bold",
@@ -124,7 +131,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#c33",
     width: "100%",
     marginBottom: "3%",
-    height: 90,
+    paddingTop: 0,
+    height: 150,
   },
 
   middleRow: {
@@ -217,5 +225,14 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 8,
     marginRight: 0,
+  },
+
+  searchButton: {
+    height: 25,
+    borderColor: "white",
+    borderWidth: 1,
+    width: 70,
+    backgroundColor: "",
+    borderRadius: 20,
   },
 });
