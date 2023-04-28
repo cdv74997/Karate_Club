@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -7,13 +7,23 @@ import {
   TextInput,
   TouchableOpacity,
   Image,
-  ScrollView,
-  Dimensions,
+  TouchableWithoutFeedback,
 } from "react-native";
 
-const screenHeight = Dimensions.get("screen").height;
-
 export default function App() {
+  const [email, setEmail] = useState("");
+  const handleEmail = () => {
+    //do something with the email like send it to the database
+
+    //reset the input field
+    setEmail("");
+  };
+
+  const TouchableImage = ({ onPress, source, style }) => (
+    <TouchableWithoutFeedback onPress={onPress}>
+      <Image source={source} style={styles} />
+    </TouchableWithoutFeedback>
+  );
   return (
     <View style={styles.container}>
       {/*this is where we have like images that play like a slideshow */}
@@ -24,8 +34,15 @@ export default function App() {
       {/*this is where we will have the top row which will contain all the usefull infor like home, the logo, contact us, appointments */}
       <View style={styles.topRow}>
         <Image
-          style={styles.logoImage}
-          source={require("./karate-kid-logo-6.png")}
+          source={require("./assets/R.png")}
+          alt="sum"
+          style={{
+            background: "white",
+            width: 175,
+            height: 150,
+            borderRadius: 0,
+            marginLeft: 180,
+          }}
         />
         <TouchableOpacity style={styles.navButton}>
           <Text style={styles.textButtons}>Home</Text>
@@ -41,9 +58,15 @@ export default function App() {
           style={styles.searchInput}
           defaultValue="Search"
         />
+        <TouchableImage
+          onPress={() => console.log("Image presssed")}
+          source={require("./assets/search.jpg")}
+          style={{ backgroundColor: "white", width: 100, height: 100 }}
+        />
       </View>
 
       {/*this is where we have the book appointment with the calendar and all that stuff */}
+
       <View style={styles.middleRow}>
         <Text>Book Appointment</Text>
       </View>
@@ -59,8 +82,18 @@ export default function App() {
           facility, our style of martial arts, our staff and provide you with
           information on how to contact us as well.
         </Text>
+
         <View style={styles.Email}>
-          <Text style={styles.text}>Email Sign up</Text>
+          <Text style={styles.emailText}>Sign up to recieve emails</Text>
+          <TextInput
+            placeholder="Enter your Email"
+            style={styles.emailInput}
+            value={email}
+            onChangeText={setEmail}
+          />
+          <TouchableOpacity style={styles.emailButton} onPress={handleEmail}>
+            <Text style={styles.emailButtonText}>Sign Up</Text>
+          </TouchableOpacity>
         </View>
       </View>
       <StatusBar style="auto" />
@@ -74,23 +107,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-  },
-
-  Email: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-    height: 60,
-  },
-
-  logoImage: {
-    color: "Black",
-    fontWeight: "bold",
-    fontSize: 20,
-    marginLeft: 100,
-    backgroundColor: "white",
-    paddingLeft: 80,
+    //use if you want to change the screen height
+    height: "150%",
   },
 
   textButtons: {
@@ -106,14 +124,15 @@ const styles = StyleSheet.create({
 
   topRow: {
     display: "grid",
-    gridTemplateColumns: "2fr 2fr 2fr 2fr 0.5fr",
+    gridTemplateColumns: "2fr 2fr 2fr 2fr 0.5fr 0.5fr",
     gridGap: 10,
     alignItems: "center",
     padding: 10,
     backgroundColor: "#c33",
     width: "100%",
     marginBottom: "3%",
-    height: 75,
+    paddingTop: 0,
+    height: 150,
   },
 
   middleRow: {
@@ -133,8 +152,7 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: "#c33",
     width: "100%",
-    marginBottom: "3%",
-    height: "30%",
+    height: "20%",
     /*
     flex: 1,
     justifyContent: "center",
@@ -148,9 +166,9 @@ const styles = StyleSheet.create({
   text: {
     alignItems: "center",
     color: "white",
-    width: "70%",
-    marginLeft: 40,
-    fontSize: 17,
+    width: "80%",
+    marginLeft: 100,
+    fontSize: 20,
   },
 
   navButton: {
@@ -160,6 +178,45 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 
+  ////Email
+  emailInput: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 5,
+    padding: 10,
+    marginVertical: 10,
+    width: "80%",
+  },
+
+  emailButton: {
+    backgroundColor: "#c33",
+    padding: 10,
+    borderRadius: 5,
+    alignItems: "center",
+    width: "80%",
+  },
+
+  emailButtonText: {
+    color: "white",
+    fontWeight: "bold",
+    fontSize: 20,
+  },
+
+  Email: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+    height: 200,
+    width: "50%",
+    marginLeft: 150,
+  },
+
+  emailText: {
+    fontSize: 25,
+    marginBottom: 15,
+  },
+
   searchInput: {
     height: 25,
     borderColor: "white",
@@ -167,6 +224,15 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     backgroundColor: "white",
     borderRadius: 8,
-    marginRight: 100,
+    marginRight: 0,
+  },
+
+  searchButton: {
+    height: 25,
+    borderColor: "white",
+    borderWidth: 1,
+    width: 70,
+    backgroundColor: "",
+    borderRadius: 20,
   },
 });
