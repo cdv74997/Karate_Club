@@ -15,8 +15,13 @@ const cors    = require('cors');
 //    console.log('Called quit');
 //    res.send({result: "Good Bye"})
 //})
-dbOperation.getCourses().then(res => {
-    console.log(res);
-})
 
+try {
+    dbOperation.getCourses().then(res => {
+      console.log(res);
+    });
+  } catch (error) {
+    console.error(error);
+  }
+  
 //app.listen(API_PORT, () => console.log(`Listening on port ${API_PORT}`));
