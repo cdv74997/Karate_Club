@@ -1,13 +1,11 @@
-const config = {
-    user: 'John',
-    password: 'verysecure',
-    server: 'DESKTOP-443BEA',
-    database: 'Karate_Club',
-    options: {
-        trustServerCertificate: true,
-        instancename: 'SQLEXPRESS'
-    },
-    port: 1433
-}
+const { Pool } = require('pg');
 
-module.exports = config
+const config = new Pool({
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    database: process.env.DB_DATABASE,
+  });
+
+module.exports = config;

@@ -1,19 +1,16 @@
 const config = require('./dbConfig');
-const sql = require('mssql');
 
-const getCourses = async() => {
-    try {
-        console.log('test');
-        let pool = await sql.connect(config);
-        console.log('test2');
-        let courses = pool.request().query("SELECT * from Course");
-        console.log(courses);
-        console.log('test');
-        return courses;
+
+
+async function getCourses() {
+  config.query('SELECT * FROM mytable', (err, res) => {
+    if (err) {
+      console.error(err);
+    } else {
+      console.log(res.rows);
     }
-    catch(error) {
-        console.log(error);
-    }
-}
+    config.end();
+  });
+  }
 
 module.exports = { getCourses }
