@@ -1,22 +1,17 @@
-const { Client } = require('pg');
-const dbConnect = putthestringhere;
-;
-
-
-
-
+const { Client } = require("pg");
+const dbConnect = "putthestringhere";
 const config = new Client({
   connectionString: dbConnect,
   ssl: {
-    rejectUnauthorized: false
-  }
+    rejectUnauthorized: false,
+  },
 });
 
 config.connect((err) => {
   if (err) {
-    console.error('connection error', err.stack);
+    console.error("connection error", err.stack);
   } else {
-    console.log('connected to database');
+    console.log("connected to database");
   }
 });
 //const { Pool } = require('pg');

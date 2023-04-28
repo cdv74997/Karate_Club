@@ -1,6 +1,6 @@
-const express = require('express');
-const dbOperation = require('./dbFiles/dbOperation');
-const cors    = require('cors');
+const express = require("express");
+const dbOperation = require("./dbFiles/dbOperation");
+const cors = require("cors");
 //
 //const API_PORT = process.env.PORT || 5000;
 //const app = express();
@@ -17,11 +17,17 @@ const cors    = require('cors');
 //})
 
 try {
-    dbOperation.getCourses().then(res => {
-      console.log(res);
-    });
-  } catch (error) {
-    console.error(error);
-  }
-  
+  dbOperation.getCourses().then((res) => {
+    console.log(res);
+  });
+} catch (error) {
+  console.error(error);
+}
+
+// try {
+//   dbOperation.fetchCourses();
+// } catch (error) {
+//   console.error(error);
+// }
+
 //app.listen(API_PORT, () => console.log(`Listening on port ${API_PORT}`));

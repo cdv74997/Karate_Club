@@ -1,5 +1,8 @@
+import { Calendar } from "react-native-calendars";
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
+// this line doesnt work idk what else to try :/
+// import { fetchCourses } from "./dbFiles/dbOperation";
 import {
   StyleSheet,
   Text,
@@ -17,6 +20,12 @@ export default function App() {
 
     //reset the input field
     setEmail("");
+  };
+  const [selectedDate, setSelectedDate] = useState(null);
+
+  const getCourseDate = (date) => {
+    // fetchCourses();
+    console.log(date);
   };
 
   const TouchableImage = ({ onPress, source, style }) => (
@@ -69,6 +78,19 @@ export default function App() {
 
       <View style={styles.middleRow}>
         <Text>Book Appointment</Text>
+        <Calendar
+          style={{
+            borderWidth: 1,
+            borderColor: "gray",
+            width: 500,
+            height: "100%",
+          }}
+          onDayPress={(day) => {
+            setSelectedDate(day.dateString);
+            getCourseDate(day.dateString);
+          }}
+          markedDates={{ [selectedDate]: { selected: true } }}
+        />
       </View>
 
       {/*this is where we have the bottom row where they can sign up for email and a lil about us page */}
