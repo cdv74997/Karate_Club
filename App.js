@@ -19,11 +19,10 @@ export default function App() {
     setEmail("");
   };
 
-  const TouchableImage = ({ onPress, source, style }) => (
-    <TouchableWithoutFeedback onPress={onPress}>
-      <Image source={source} style={styles} />
-    </TouchableWithoutFeedback>
-  );
+  const Search = () => {
+    console.log("touched");
+  };
+
   return (
     <View style={styles.container}>
       {/*this is where we have like images that play like a slideshow */}
@@ -58,11 +57,17 @@ export default function App() {
           style={styles.searchInput}
           defaultValue="Search"
         />
-        <TouchableImage
-          onPress={() => console.log("Image presssed")}
-          source={require("./assets/search.jpg")}
-          style={{ backgroundColor: "white", width: 100, height: 100 }}
-        />
+        {/*this is where the search button will be at*/}
+        <TouchableOpacity onPress={Search}>
+          <Image
+            source={require("./assets/Search-icon.png")}
+            alt="sum"
+            style={{
+              width: 35,
+              height: 35,
+            }}
+          />
+        </TouchableOpacity>
       </View>
 
       {/*this is where we have the book appointment with the calendar and all that stuff */}
@@ -228,11 +233,18 @@ const styles = StyleSheet.create({
   },
 
   searchButton: {
+    background: "white",
+    width: 175,
+    height: 150,
+    borderRadius: 0,
+    marginLeft: 180,
+    /*
     height: 25,
     borderColor: "white",
     borderWidth: 1,
     width: 70,
     backgroundColor: "",
     borderRadius: 20,
+    */
   },
 });
