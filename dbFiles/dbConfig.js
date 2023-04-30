@@ -1,5 +1,5 @@
 const { Client } = require('pg');
-const dbConnect = putthestringhere;
+const dbConnect = 'postgres://vjrezkqm:kLQQb4W5qcvm6LQ7bXmS_R9PIVoAKZLS@salt.db.elephantsql.com/vjrezkqm';
 ;
 
 
