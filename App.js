@@ -32,18 +32,11 @@ export default function App() {
     return dates;
   }
 
-<<<<<<< HEAD
   const TouchableImage = ({ onPress, source, style }) => (
     <TouchableWithoutFeedback onPress={onPress}>
       <Image source={source} style={style} />
     </TouchableWithoutFeedback>
   );
-=======
-  const Search = () => {
-    console.log("touched");
-  };
-
->>>>>>> e9b1f315d395fc7dcbe3916e010228ad54ea0cca
   return (
     <View style={styles.container}>
       {/*this is where we have like images that play like a slideshow */}
@@ -79,7 +72,7 @@ export default function App() {
           defaultValue="Search"
         />
         {/*this is where the search button will be at*/}
-        <TouchableOpacity onPress={Search}>
+        <TouchableOpacity >
           <Image
             source={require("./assets/Search-icon.png")}
             alt="sum"
@@ -146,143 +139,6 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-<<<<<<< HEAD
-    container: {
-      flex: 1,
-      backgroundColor: "#fff",
-      alignItems: "center",
-      justifyContent: "center",
-      //use if you want to change the screen height
-      height: "150%",
-    },
-  
-    textButtons: {
-      color: "white",
-      fontWeight: "bold",
-      fontSize: 20,
-    },
-  
-    banner: {
-      paddingTop: 20,
-      paddingBottom: 20,
-    },
-  
-    topRow: {
-      display: "grid",
-      gridTemplateColumns: "2fr 2fr 2fr 2fr 0.5fr 0.5fr",
-      gridGap: 10,
-      alignItems: "center",
-      padding: 10,
-      backgroundColor: "#c33",
-      width: "100%",
-      marginBottom: "3%",
-      paddingTop: 0,
-      height: 150,
-    },
-  
-    middleRow: {
-      flex: 1,
-      justifyContent: "center",
-      alignItems: "center",
-      backgroundColor: "lightgray",
-      marginBottom: "3%",
-      width: "50%",
-    },
-  
-    bottomRow: {
-      display: "grid",
-      gridTemplateColumns: "1fr 1fr",
-      gridGap: 0,
-      alignItems: "center",
-      padding: 10,
-      backgroundColor: "#c33",
-      width: "100%",
-      height: "20%",
-      /*
-      flex: 1,
-      justifyContent: "center",
-      alignItems: "center",
-      backgroundColor: "lightgray",
-      marginBottom: "3%",
-      width: "50%",
-      */
-    },
-  
-    text: {
-      alignItems: "center",
-      color: "white",
-      width: "80%",
-      marginLeft: 100,
-      fontSize: 20,
-    },
-  
-    navButton: {
-      backgroundColor: "#c33",
-      padding: 10,
-      borderRadius: 5,
-      alignItems: "center",
-    },
-  
-    ////Email
-    emailInput: {
-      borderWidth: 1,
-      borderColor: "#ccc",
-      borderRadius: 5,
-      padding: 10,
-      marginVertical: 10,
-      width: "80%",
-    },
-  
-    emailButton: {
-      backgroundColor: "#c33",
-      padding: 10,
-      borderRadius: 5,
-      alignItems: "center",
-      width: "80%",
-    },
-  
-    emailButtonText: {
-      color: "white",
-      fontWeight: "bold",
-      fontSize: 20,
-    },
-  
-    Email: {
-      flex: 1,
-      backgroundColor: "#fff",
-      alignItems: "center",
-      justifyContent: "center",
-      height: 200,
-      width: "50%",
-      marginLeft: 150,
-    },
-  
-    emailText: {
-      fontSize: 25,
-      marginBottom: 15,
-    },
-  
-    searchInput: {
-      height: 25,
-      borderColor: "white",
-      borderWidth: 1,
-      paddingLeft: 15,
-      backgroundColor: "white",
-      borderRadius: 8,
-      marginRight: 0,
-    },
-  
-    searchButton: {
-      height: 25,
-      borderColor: "white",
-      borderWidth: 1,
-      width: 70,
-      backgroundColor: "",
-      borderRadius: 20,
-    },
-  });
-  
-=======
   container: {
     flex: 1,
     backgroundColor: "#fff",
@@ -409,19 +265,18 @@ const styles = StyleSheet.create({
   },
 
   searchButton: {
-    background: "white",
+    /*background: "white",
     width: 175,
     height: 150,
     borderRadius: 0,
     marginLeft: 180,
-    /*
+    */
     height: 25,
     borderColor: "white",
     borderWidth: 1,
     width: 70,
     backgroundColor: "",
     borderRadius: 20,
-    */
+    
   },
 });
->>>>>>> e9b1f315d395fc7dcbe3916e010228ad54ea0cca
