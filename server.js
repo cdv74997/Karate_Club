@@ -6,7 +6,7 @@ const API_PORT = process.env.PORT || 5000;
 const app = express();
 app.use(cors());
 
-app.get("/api/data/:input", async (req, res) => {
+app.get("/api/data/:date", async (req, res) => {
   try {
     const data = await dbOperation.fetchCourses(req.params.input);
     res.json(data);
@@ -26,7 +26,8 @@ app.get("/api/data/:input", async (req, res) => {
 //})
 
 // try {
-//   dbOperation.getCourses().then((res) => {
+//   console.log("hello");
+//   dbOperation.fetchCourses(5).then((res) => {
 //     console.log(res);
 //   });
 // } catch (error) {

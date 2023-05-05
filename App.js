@@ -32,17 +32,6 @@ export default function App() {
     return dates;
   };
 
-  const getCourseFromDate = (date) => {
-    fetch(`/api/data/${input}`)
-      .then((response) => response.json())
-      .then((data) => {
-        // do something with the data
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  };
-
   const TouchableImage = ({ onPress, source, style }) => (
     <TouchableWithoutFeedback onPress={onPress}>
       <Image source={source} style={style} />
@@ -105,7 +94,7 @@ export default function App() {
           <TouchableOpacity
             key={index}
             onPress={() => {
-              //i tried just /api/data w/o localhost and that also didnt work
+              console.log("date (app)" + date);
               fetch(`http://localhost:5000/api/data/${date}`)
                 //rn im just printing it because im trying to verify that its returning something but it isnt
                 .then((response) => console.log(response.text()))
