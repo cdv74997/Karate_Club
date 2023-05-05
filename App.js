@@ -93,17 +93,17 @@ export default function App() {
         {generateDates().map((date, index) => (
           <TouchableOpacity
             key={index}
-            onPress={() => {
+            onPress={async () => {
               console.log("date (app)" + date);
-              fetch(`http://localhost:5000/api/data/${date}`)
-                //rn im just printing it because im trying to verify that its returning something but it isnt
-                .then((response) => console.log(response.text()))
-                .then((data) => {
-                  console.log(data);
-                })
-                .catch((error) => {
-                  console.error("Error:", error);
-                });
+              try {
+                const response = await fetch(
+                  `http://localhost:5000/api/data/?day=5`
+                );
+                const data = await response.text();
+                console.log(data);
+              } catch (error) {
+                console.error("Error:", error);
+              }
               setSelectedDate(date);
             }}
             style={{
