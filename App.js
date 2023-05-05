@@ -1,4 +1,4 @@
-import moment from 'moment';
+import moment from "moment";
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 import {
@@ -27,10 +27,21 @@ export default function App() {
     const startDate = moment();
 
     for (let i = 0; i < 6; i++) {
-      dates.push(moment(startDate).add(i, 'days'));
+      dates.push(moment(startDate).add(i, "days"));
     }
     return dates;
-  }
+  };
+
+  const getCourseFromDate = (date) => {
+    fetch(`/api/data/${input}`)
+      .then((response) => response.json())
+      .then((data) => {
+        // do something with the data
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
 
   const TouchableImage = ({ onPress, source, style }) => (
     <TouchableWithoutFeedback onPress={onPress}>
@@ -72,7 +83,7 @@ export default function App() {
           defaultValue="Search"
         />
         {/*this is where the search button will be at*/}
-        <TouchableOpacity >
+        <TouchableOpacity>
           <Image
             source={require("./assets/Search-icon.png")}
             alt="sum"
@@ -93,17 +104,36 @@ export default function App() {
         {generateDates().map((date, index) => (
           <TouchableOpacity
             key={index}
-            onPress={() => setSelectedDate(date)}
+            onPress={() => {
+              //i tried just /api/data w/o localhost and that also didnt work
+              fetch(`http://localhost:5000/api/data/${date}`)
+                //rn im just printing it because im trying to verify that its returning something but it isnt
+                .then((response) => console.log(response.text()))
+                .then((data) => {
+                  console.log(data);
+                })
+                .catch((error) => {
+                  console.error("Error:", error);
+                });
+              setSelectedDate(date);
+            }}
             style={{
-              backgroundColor: selectedDate.isSame(date, 'day') ? '#007bff' : '#fff',
+              backgroundColor: selectedDate.isSame(date, "day")
+                ? "#007bff"
+                : "#fff",
               paddingHorizontal: 10,
               height: 40,
               paddingVertical: 5,
               borderRadius: 5,
-              marginRight: 10
-            }}>
-            <Text style={{color: selectedDate.isSame(date, 'day') ? '#fff' : '#000'}}>
-              {date.format('dddd, MMM D')}
+              marginRight: 10,
+            }}
+          >
+            <Text
+              style={{
+                color: selectedDate.isSame(date, "day") ? "#fff" : "#000",
+              }}
+            >
+              {date.format("dddd, MMM D")}
             </Text>
           </TouchableOpacity>
         ))}
@@ -277,6 +307,5 @@ const styles = StyleSheet.create({
     width: 70,
     backgroundColor: "",
     borderRadius: 20,
-    
   },
 });
