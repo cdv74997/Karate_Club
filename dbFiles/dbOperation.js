@@ -1,10 +1,9 @@
 const pool = require("./dbConfig");
 
-// async function getCourseFromDate(date) {
+// async function getCourseFromDate() {
 //   return new Promise((resolve, reject) => {
 //     config.query(
-//       "SELECT * FROM Courses WHERE courses.day = $1",
-//       [date],
+//       "SELECT * FROM Courses ",
 //       (err, res) => {
 //         if (err) {
 //           console.error(err);

@@ -16,6 +16,7 @@ import {
 export default function App() {
   const [email, setEmail] = useState("");
   const [selectedDate, setSelectedDate] = useState(moment());
+  const [fetchedData, setFetchedData] = useState(null);
   const handleEmail = () => {
     //do something with the email like send it to the database
 
@@ -96,11 +97,13 @@ export default function App() {
             onPress={async () => {
               console.log("date (app)" + date);
               try {
+                const dayNumber = date.weekday(); // Add this line to get the day number
                 const response = await fetch(
-                  `http://localhost:5000/api/data/?day=5`
+                  `http://localhost:5000/api/data/?day=${dayNumber}` // Use the dayNumber here
                 );
-                const data = await response.text();
+                const data = await response.json();
                 console.log(data);
+                setFetchedData(data);
               } catch (error) {
                 console.error("Error:", error);
               }
@@ -127,7 +130,22 @@ export default function App() {
           </TouchableOpacity>
         ))}
       </ScrollView>
-
+      <FlatList
+        data={fetchedData}
+        renderItem={({ item }) => (
+          <View style={styles.listItem}>
+            <Text style={styles.listItemText}>Name: {item.name}</Text>
+            <Text style={styles.listItemText}>
+              Instructor: {item.instructor}
+            </Text>
+            <Text style={styles.listItemText}>
+              Start Time: {item.start_time}
+            </Text>
+            <Text style={styles.listItemText}>End Time: {item.end_time}</Text>
+          </View>
+        )}
+        keyExtractor={(item) => item.id.toString()}
+      />
       {/*this is where we have the bottom row where they can sign up for email and a lil about us page */}
       <View style={styles.bottomRow}>
         <Text style={styles.text}>
@@ -296,5 +314,16 @@ const styles = StyleSheet.create({
     width: 70,
     backgroundColor: "",
     borderRadius: 20,
+  },
+  listItem: {
+    backgroundColor: "#f9f9f9",
+    padding: 10,
+    borderRadius: 5,
+    marginBottom: 10,
+  },
+
+  listItemText: {
+    fontSize: 16,
+    color: "#000",
   },
 });
