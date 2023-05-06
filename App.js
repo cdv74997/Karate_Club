@@ -1,6 +1,7 @@
 import moment from 'moment';
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
+import { fetchCourses } from './dbFiles/dbOperation';
 import {
   StyleSheet,
   Text,
@@ -31,7 +32,33 @@ export default function App() {
     }
     return dates;
   }
+  const [courses, setCourses] = useState([]);
 
+  useEffect(() => {
+    async function fetchData() {
+      const courses = await fetchCourses(selectedDate.format('E'), selectedDate.format('YYYY-MM-DD'));
+      setCourses(courses);
+    }
+    fetchData();
+  }, [selectedDate]);
+
+  const renderClasses = () => {
+    if (courses.length === 0) {
+      return (
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <Text>No classes scheduled for this day.</Text>
+        </View>
+      );
+    } else {
+      return courses.map((course, index) => (
+        <View key={index} style={{paddingVertical: 10, paddingHorizontal: 20, borderBottomWidth: 1, borderBottomColor: '#ddd'}}>
+          <Text style={{fontSize: 16, fontWeight: 'bold'}}>{course.name}</Text>
+          <Text style={{fontSize: 14, marginTop: 5}}>{course.instructor}</Text>
+          <Text style={{fontSize: 14, marginTop: 5}}>{moment(course.startTime, 'hh:mm A').format('hh:mm A')} - {moment(course.endTime, 'hh:mm A').format('hh:mm A')}</Text>
+        </View>
+      ));
+    }
+  };
   const TouchableImage = ({ onPress, source, style }) => (
     <TouchableWithoutFeedback onPress={onPress}>
       <Image source={source} style={style} />
@@ -106,8 +133,31 @@ export default function App() {
               {date.format('dddd, MMM D')}
             </Text>
           </TouchableOpacity>
+          
         ))}
       </ScrollView>
+      <View style={{flex: 1, paddingTop: 50, paddingHorizontal: 20}}>
+  <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+    {generateDates().map((date, index) => (
+      <TouchableOpacity
+        key={index}
+        onPress={() => setSelectedDate(date)}
+        style={{
+          backgroundColor: selectedDate.isSame(date, 'day') ? '#007bff' : '#fff',
+          paddingHorizontal: 10,
+          height: 40,
+          paddingVertical: 5,
+          borderRadius: 5,
+          marginRight: 10
+        }}>
+        <Text style={{color: selectedDate.isSame(date, 'day') ? '#fff' : '#000'}}>
+          {date.format('dddd, MMM D')}
+        </Text>
+      </TouchableOpacity>
+    ))}
+  </ScrollView>
+  {renderClasses()}
+</View>
 
       {/*this is where we have the bottom row where they can sign up for email and a lil about us page */}
       <View style={styles.bottomRow}>
