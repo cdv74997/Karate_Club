@@ -1,4 +1,4 @@
-import moment from 'moment';
+import moment from "moment";
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 import { fetchCourses } from './dbFiles/dbOperation';
@@ -16,23 +16,29 @@ import {
 
 export default function App() {
   const [email, setEmail] = useState("");
+  const [search, setSearch] = useState("");
   const [selectedDate, setSelectedDate] = useState(moment());
   const handleEmail = () => {
     //do something with the email like send it to the database
 
     //reset the input field
     setEmail("");
+    console.log("sent email");
+  };
+  const handleSearch = () => {
+    //do something here for the search bar
+    setSearch("");
+    console.log("sent search");
   };
   const generateDates = () => {
     const dates = [];
     const startDate = moment();
 
     for (let i = 0; i < 6; i++) {
-      dates.push(moment(startDate).add(i, 'days'));
+      dates.push(moment(startDate).add(i, "days"));
     }
     return dates;
-  }
-  const [courses, setCourses] = useState([]);
+  };
 
   useEffect(() => {
     async function fetchData() {
@@ -66,11 +72,6 @@ export default function App() {
   );
   return (
     <View style={styles.container}>
-      {/*this is where we have like images that play like a slideshow */}
-      <View style={styles.banner}>
-        <Text>Banner</Text>
-      </View>
-
       {/*this is where we will have the top row which will contain all the usefull infor like home, the logo, contact us, appointments */}
       <View style={styles.topRow}>
         <Image
@@ -78,10 +79,12 @@ export default function App() {
           alt="sum"
           style={{
             background: "white",
-            width: 175,
-            height: 150,
+            // width: 175,
+            // height: 150,
+            height: 110,
+            width: 120,
             borderRadius: 0,
-            marginLeft: 180,
+            marginLeft: 50,
           }}
         />
         <TouchableOpacity style={styles.navButton}>
@@ -97,9 +100,11 @@ export default function App() {
           placeholder="Search"
           style={styles.searchInput}
           defaultValue="Search"
+          value={search}
+          onChangeText={setSearch}
         />
         {/*this is where the search button will be at*/}
-        <TouchableOpacity >
+        <TouchableOpacity onPress={handleSearch}>
           <Image
             source={require("./assets/Search-icon.png")}
             alt="sum"
@@ -111,53 +116,77 @@ export default function App() {
         </TouchableOpacity>
       </View>
 
+      {/*this is where we have like images that play like a slideshow */}
+      <View style={styles.banner}>
+        <Image
+          //R.jpg
+          source={require("./assets/R.jpg")}
+          alt="sum"
+          style={{
+            width: 450,
+            height: 250,
+          }}
+        />
+        <Image
+          //R.jpg
+          source={require("./assets/maxresdefault.jpg")}
+          alt="sum"
+          style={{
+            width: 450,
+            height: 250,
+          }}
+        />
+        <Image
+          //R.jpg
+          source={require("./assets/OIP (1).jpg")}
+          alt="sum"
+          style={{
+            width: 450,
+            height: 250,
+          }}
+        />
+        <Image
+          //R.jpg
+          source={require("./assets/OIP.jpg")}
+          alt="sum"
+          style={{
+            width: 450,
+            height: 250,
+          }}
+        />
+      </View>
+
       {/*this is where we have the book appointment with the calendar and all that stuff */}
 
       <View style={styles.middleRow}>
         <Text>Book Appointment</Text>
+        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+          {generateDates().map((date, index) => (
+            <TouchableOpacity
+              key={index}
+              onPress={() => setSelectedDate(date)}
+              style={{
+                backgroundColor: selectedDate.isSame(date, "day")
+                  ? "#007bff"
+                  : "#fff",
+                paddingHorizontal: 10,
+                height: 40,
+                paddingVertical: 5,
+                borderRadius: 5,
+                marginRight: 10,
+              }}
+            >
+              <Text
+                style={{
+                  color: selectedDate.isSame(date, "day") ? "#fff" : "#000",
+                }}
+              >
+                {date.format("dddd, MMM D")}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
       </View>
-      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-        {generateDates().map((date, index) => (
-          <TouchableOpacity
-            key={index}
-            onPress={() => setSelectedDate(date)}
-            style={{
-              backgroundColor: selectedDate.isSame(date, 'day') ? '#007bff' : '#fff',
-              paddingHorizontal: 10,
-              height: 40,
-              paddingVertical: 5,
-              borderRadius: 5,
-              marginRight: 10
-            }}>
-            <Text style={{color: selectedDate.isSame(date, 'day') ? '#fff' : '#000'}}>
-              {date.format('dddd, MMM D')}
-            </Text>
-          </TouchableOpacity>
-          
-        ))}
-      </ScrollView>
-      <View style={{flex: 1, paddingTop: 50, paddingHorizontal: 20}}>
-  <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-    {generateDates().map((date, index) => (
-      <TouchableOpacity
-        key={index}
-        onPress={() => setSelectedDate(date)}
-        style={{
-          backgroundColor: selectedDate.isSame(date, 'day') ? '#007bff' : '#fff',
-          paddingHorizontal: 10,
-          height: 40,
-          paddingVertical: 5,
-          borderRadius: 5,
-          marginRight: 10
-        }}>
-        <Text style={{color: selectedDate.isSame(date, 'day') ? '#fff' : '#000'}}>
-          {date.format('dddd, MMM D')}
-        </Text>
-      </TouchableOpacity>
-    ))}
-  </ScrollView>
-  {renderClasses()}
-</View>
 
       {/*this is where we have the bottom row where they can sign up for email and a lil about us page */}
       <View style={styles.bottomRow}>
@@ -205,8 +234,13 @@ const styles = StyleSheet.create({
   },
 
   banner: {
-    paddingTop: 20,
-    paddingBottom: 20,
+    //paddingTop: 20,
+    // paddingBottom: 20,
+    marginBottom: "3%",
+    display: "grid",
+    gridTemplateColumns: "2fr 2fr 2fr 2fr 2fr",
+    gridGap: 1,
+    alignItems: "center",
   },
 
   topRow: {
@@ -217,9 +251,10 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: "#c33",
     width: "100%",
-    marginBottom: "3%",
+    // marginBottom: "3%",
     paddingTop: 0,
-    height: 150,
+    //height: 150,
+    height: 110,
   },
 
   middleRow: {
@@ -327,6 +362,5 @@ const styles = StyleSheet.create({
     width: 70,
     backgroundColor: "",
     borderRadius: 20,
-    
   },
 });
