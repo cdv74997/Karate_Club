@@ -16,9 +16,18 @@ const { fetchCourses } = require('./dbFiles/dbOperation');
 //    console.log('Called quit');
 //    res.send({result: "Good Bye"})
 //})
+const day = 4; // Monday
+const date = new Date('2023-05-09');
+dbOperation.fetchCourses(day, date).then(res => {
+  console.log(res);
+}).catch(err => {
+  console.error(err);
+});
 
 try {
-    dbOperation.getCourses().then(res => {
+    const day = 6; // Monday
+    const date = new Date('2023-05-09'); 
+    dbOperation.fetchCourses(day, date).then(res => {
       console.log(res);
     });
   } catch (error) {
@@ -26,13 +35,13 @@ try {
   }
 
 
-  (async () => {
-    // Replace the day and date variables with your desired values
-    const day = 5; // Monday
-    const date = new Date('2023-05-09'); // May 9, 2022
+  //(async () => {
+    //// Replace the day and date variables with your desired values
+    //const day = 5; // Monday
+    //const date = new Date('2023-05-09'); // May 9, 2022
   
-    const courses = await fetchCourses(day, date);
+ //   const courses = await fetchCourses(day, date);
   
-    console.log(courses);
-  })();
+   // console.log(courses);
+ // })();
 //app.listen(API_PORT, () => console.log(`Listening on port ${API_PORT}`));
