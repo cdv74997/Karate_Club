@@ -6,9 +6,9 @@ const API_PORT = process.env.PORT || 5000;
 const app = express();
 app.use(cors());
 
-app.get("/api/data/:date", async (req, res) => {
+app.get("/api/data/", async (req, res) => {
   try {
-    const data = await dbOperation.fetchCourses(req.params.input);
+    const data = await dbOperation.fetchCourses(req.query.day);
     res.json(data);
   } catch (err) {
     res.status(500).json({ message: err.message });

@@ -13,13 +13,22 @@ import {
   ScrollView,
 } from "react-native";
 
+function formatTime(timeString) {
+  const [hours, minutes] = timeString.split(':');
+  const meridiem = hours >= 12 ? 'PM' : 'AM';
+  const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
+  return `${formattedHours}:${minutes} ${meridiem}`;
+}
+
 export default function App() {
+  
   const [email, setEmail] = useState("");
   const [selectedDate, setSelectedDate] = useState(moment());
   const [fetchedData, setFetchedData] = useState(null);
+  
   const handleEmail = () => {
     //do something with the email like send it to the database
-
+ 
     //reset the input field
     setEmail("");
   };
@@ -32,6 +41,7 @@ export default function App() {
     }
     return dates;
   };
+  
 
   const TouchableImage = ({ onPress, source, style }) => (
     <TouchableWithoutFeedback onPress={onPress}>
@@ -102,8 +112,13 @@ export default function App() {
                   `http://localhost:5000/api/data/?day=${dayNumber}` // Use the dayNumber here
                 );
                 const data = await response.json();
-                console.log(data);
-                setFetchedData(data);
+                const sortedData = data.sort((a, b) => {
+                  const startA = moment.duration(a.start_time);
+                  const startB = moment.duration(b.start_time);
+                  return startA - startB;
+                });
+                console.log(sortedData);
+                setFetchedData(sortedData);
               } catch (error) {
                 console.error("Error:", error);
               }
@@ -134,18 +149,40 @@ export default function App() {
         data={fetchedData}
         renderItem={({ item }) => (
           <View style={styles.listItem}>
-            <Text style={styles.listItemText}>Name: {item.name}</Text>
-            <Text style={styles.listItemText}>
-              Instructor: {item.instructor}
-            </Text>
-            <Text style={styles.listItemText}>
-              Start Time: {item.start_time}
-            </Text>
-            <Text style={styles.listItemText}>End Time: {item.end_time}</Text>
+              <Text numberOfLines={1} style={[styles.listItemText, { flex: 7, width: 300, paddingRight: 40 }]}>
+                {item.name}
+              </Text>
+              <Text numberOfLines={1} style={[styles.listItemText, { flex: 5, width: 100,paddingRight: 20 }]}>
+                {item.instructor}
+              </Text>
+              <Text numberOfLines={1} style={[styles.listItemText, { flex: 2, width: 150,paddingRight: 10 }]}>
+                {formatTime(item.start_time)}
+              </Text>
+              <Text numberOfLines={1} style={[styles.listItemText, { flex: 2, width: 150, paddingRight: 10 }]}>
+                {formatTime(item.end_time)}
+              </Text>
+              {moment(item.start_time, "HH:mm").isBefore(moment()) && moment().day() === item.day ? (
+                <Text>Past</Text>
+              ) : (
+                <TouchableOpacity 
+                  onPress={() => {}}
+                  style={{
+                    backgroundColor: "#007bff",
+                    color: "white",
+                    paddingHorizontal: 10,
+                    paddingVertical: 5,
+                    borderRadius: 5,
+                    marginLeft: 10,
+                  }}>
+                  <Text>Book</Text>
+                </TouchableOpacity>
+              )}
+            
           </View>
         )}
         keyExtractor={(item) => item.id.toString()}
       />
+      
       {/*this is where we have the bottom row where they can sign up for email and a lil about us page */}
       <View style={styles.bottomRow}>
         <Text style={styles.text}>
@@ -184,6 +221,8 @@ const styles = StyleSheet.create({
     //use if you want to change the screen height
     height: "150%",
   },
+
+  
 
   textButtons: {
     color: "white",
@@ -316,6 +355,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   listItem: {
+    flexDirection: 'row',
     backgroundColor: "#f9f9f9",
     padding: 10,
     borderRadius: 5,
