@@ -56,10 +56,7 @@ export default function Home() {
   );
   return (
     <View style={styles.container}>
-      {/*this is where we have like images that play like a slideshow */}
-      <View style={styles.banner}>
-        <Text>Banner</Text>
-      </View>
+      
 
       {/*this is where we will have the top row which will contain all the usefull infor like home, the logo, contact us, appointments */}
       <View style={styles.topRow}>
@@ -99,6 +96,47 @@ export default function Home() {
             }}
           />
         </TouchableOpacity>
+        
+      </View>
+      {/*this is where we have like images that play like a slideshow */}
+      <View style={styles.banner}>
+        <Text>Banner</Text>
+        <Image
+          //R.jpg
+          source={require("./../assets/R.jpg")}
+          alt="sum"
+          style={{
+            width: 450,
+            height: 250,
+          }}
+        />
+        <Image
+          //R.jpg
+          source={require("./../assets/maxresdefault.jpg")}
+          alt="sum"
+          style={{
+            width: 450,
+            height: 250,
+          }}
+        />
+        <Image
+          //R.jpg
+          source={require("./../assets/OIP (1).jpg")}
+          alt="sum"
+          style={{
+            width: 450,
+            height: 250,
+          }}
+        />
+        <Image
+          //R.jpg
+          source={require("./../assets/OIP.jpg")}
+          alt="sum"
+          style={{
+            width: 450,
+            height: 250,
+          }}
+        />
       </View>
 
       {/*this is where we have the book appointment with the calendar and all that stuff */}
@@ -192,7 +230,7 @@ export default function Home() {
       {/*this is where we have the bottom row where they can sign up for email and a lil about us page */}
       <View style={styles.bottomRow}>
         <Text style={styles.text}>
-          Welcome to America's Best Chatsworth in Chatsworth, CA Since 1990,
+          Welcome to America's Best Karate in Chatsworth, CA Since 1990,
           America's Best Karate has been providing instruction in Tang Soo Do,
           Krav Maga and the martial arts in the Chatsworth, CA area. We hope you
           enjoy our website and will stop by and visit us if you are in the
@@ -238,8 +276,13 @@ const styles = StyleSheet.create({
     },
   
     banner: {
-      paddingTop: 20,
-      paddingBottom: 20,
+      //paddingTop: 20,
+      //paddingBottom: 20,
+      marginBottom: "3%",
+      display: "grid",
+      gridTemplateColumns: "2fr 2fr 2fr 2fr 2fr",
+      gridGap: 1,
+      alignItems: "center",
     },
   
     topRow: {
@@ -250,9 +293,9 @@ const styles = StyleSheet.create({
       padding: 10,
       backgroundColor: "#c33",
       width: "100%",
-      marginBottom: "3%",
+      //marginBottom: "3%",
       paddingTop: 0,
-      height: 150,
+      height: 110,
     },
   
     middleRow: {
