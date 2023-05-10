@@ -1,7 +1,7 @@
 import moment from "moment";
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 import ClassInfo from "./ClassInfo";
 
 import {
@@ -17,26 +17,31 @@ import {
   TextLink,
 } from "react-native";
 
-
-
 function formatTime(timeString) {
-  const [hours, minutes] = timeString.split(':');
-  const meridiem = hours >= 12 ? 'PM' : 'AM';
+  const [hours, minutes] = timeString.split(":");
+  const meridiem = hours >= 12 ? "PM" : "AM";
   const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
   return `${formattedHours}:${minutes} ${meridiem}`;
 }
 
 export default function Home() {
-    const navigation = useNavigation();
+  const navigation = useNavigation();
   const [email, setEmail] = useState("");
   const [selectedDate, setSelectedDate] = useState(moment());
   const [fetchedData, setFetchedData] = useState(null);
-  
+  //used for search
+  const [search, setSearch] = useState("");
+
   const handleEmail = () => {
     //do something with the email like send it to the database
- 
+
     //reset the input field
     setEmail("");
+  };
+  const handleSearch = () => {
+    //do something here for the serach input
+    setSearch("");
+    console.log("sent serach");
   };
   const generateDates = () => {
     const dates = [];
@@ -47,28 +52,20 @@ export default function Home() {
     }
     return dates;
   };
-  
 
-  const TouchableImage = ({ onPress, source, style }) => (
-    <TouchableWithoutFeedback onPress={onPress}>
-      <Image source={source} style={style} />
-    </TouchableWithoutFeedback>
-  );
   return (
     <View style={styles.container}>
-      
-
       {/*this is where we will have the top row which will contain all the usefull infor like home, the logo, contact us, appointments */}
       <View style={styles.topRow}>
         <Image
           source={require("./../assets/R.png")}
-          alt="sum"
+          alt="logo image"
           style={{
             background: "white",
-            width: 175,
-            height: 150,
+            width: 120,
+            height: 110,
             borderRadius: 0,
-            marginLeft: 180,
+            marginLeft: 50,
           }}
         />
         <TouchableOpacity style={styles.navButton}>
@@ -84,54 +81,50 @@ export default function Home() {
           placeholder="Search"
           style={styles.searchInput}
           defaultValue="Search"
+          value={search}
+          onChangeText={setSearch}
         />
         {/*this is where the search button will be at*/}
         <TouchableOpacity>
           <Image
             source={require("./../assets/Search-icon.png")}
-            alt="sum"
+            alt="search button image"
             style={{
               width: 35,
               height: 35,
             }}
           />
         </TouchableOpacity>
-        
       </View>
       {/*this is where we have like images that play like a slideshow */}
       <View style={styles.banner}>
-        <Text>Banner</Text>
         <Image
-          //R.jpg
           source={require("./../assets/R.jpg")}
-          alt="sum"
+          alt="Karate Image"
           style={{
             width: 450,
             height: 250,
           }}
         />
         <Image
-          //R.jpg
           source={require("./../assets/maxresdefault.jpg")}
-          alt="sum"
+          alt="KarateImage"
           style={{
             width: 450,
             height: 250,
           }}
         />
         <Image
-          //R.jpg
           source={require("./../assets/OIP (1).jpg")}
-          alt="sum"
+          alt="karateImage"
           style={{
             width: 450,
             height: 250,
           }}
         />
         <Image
-          //R.jpg
           source={require("./../assets/OIP.jpg")}
-          alt="sum"
+          alt="KarateImage"
           style={{
             width: 450,
             height: 250,
@@ -193,40 +186,65 @@ export default function Home() {
         data={fetchedData}
         renderItem={({ item }) => (
           <View style={styles.listItem}>
-              <Text numberOfLines={1} style={[styles.listItemText, { flex: 7, width: 300, paddingRight: 40 }]}>
-                {item.name}
-              </Text>
-              <Text numberOfLines={1} style={[styles.listItemText, { flex: 5, width: 100,paddingRight: 20 }]}>
-                {item.instructor}
-              </Text>
-              <Text numberOfLines={1} style={[styles.listItemText, { flex: 2, width: 150,paddingRight: 10 }]}>
-                {formatTime(item.start_time)}
-              </Text>
-              <Text numberOfLines={1} style={[styles.listItemText, { flex: 2, width: 150, paddingRight: 10 }]}>
-                {formatTime(item.end_time)}
-              </Text>
-              {moment(item.start_time, "HH:mm").isBefore(moment()) && moment().day() === item.day ? (
-                <Text>Past</Text>
-              ) : (
-                <TouchableOpacity
-                  onPress={() => navigation.navigate("ClassInfo", { item })}
-                  style={{
-                    backgroundColor: "#007bff",
-                    color: "white",
-                    paddingHorizontal: 10,
-                    paddingVertical: 5,
-                    borderRadius: 5,
-                    marginLeft: 10,
-                  }}>
-                  <Text>Book</Text>
-                </TouchableOpacity>
-              )}
-            
+            <Text
+              numberOfLines={1}
+              style={[
+                styles.listItemText,
+                { flex: 7, width: 300, paddingRight: 40 },
+              ]}
+            >
+              {item.name}
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={[
+                styles.listItemText,
+                { flex: 5, width: 100, paddingRight: 20 },
+              ]}
+            >
+              {item.instructor}
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={[
+                styles.listItemText,
+                { flex: 2, width: 150, paddingRight: 10 },
+              ]}
+            >
+              {formatTime(item.start_time)}
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={[
+                styles.listItemText,
+                { flex: 2, width: 150, paddingRight: 10 },
+              ]}
+            >
+              {formatTime(item.end_time)}
+            </Text>
+            {moment(item.start_time, "HH:mm").isBefore(moment()) &&
+            moment().day() === item.day ? (
+              <Text>Past</Text>
+            ) : (
+              <TouchableOpacity
+                onPress={() => navigation.navigate("ClassInfo", { item })}
+                style={{
+                  backgroundColor: "#007bff",
+                  color: "white",
+                  paddingHorizontal: 10,
+                  paddingVertical: 5,
+                  borderRadius: 5,
+                  marginLeft: 10,
+                }}
+              >
+                <Text>Book</Text>
+              </TouchableOpacity>
+            )}
           </View>
         )}
         keyExtractor={(item) => item.id.toString()}
       />
-      
+
       {/*this is where we have the bottom row where they can sign up for email and a lil about us page */}
       <View style={styles.bottomRow}>
         <Text style={styles.text}>
@@ -256,164 +274,152 @@ export default function Home() {
   );
 }
 
-
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: "#fff",
-      alignItems: "center",
-      justifyContent: "center",
-      //use if you want to change the screen height
-      height: "150%",
-    },
-  
-    
-  
-    textButtons: {
-      color: "white",
-      fontWeight: "bold",
-      fontSize: 20,
-    },
-  
-    banner: {
-      //paddingTop: 20,
-      //paddingBottom: 20,
-      marginBottom: "3%",
-      display: "grid",
-      gridTemplateColumns: "2fr 2fr 2fr 2fr 2fr",
-      gridGap: 1,
-      alignItems: "center",
-    },
-  
-    topRow: {
-      display: "grid",
-      gridTemplateColumns: "2fr 2fr 2fr 2fr 0.5fr 0.5fr",
-      gridGap: 10,
-      alignItems: "center",
-      padding: 10,
-      backgroundColor: "#c33",
-      width: "100%",
-      //marginBottom: "3%",
-      paddingTop: 0,
-      height: 110,
-    },
-  
-    middleRow: {
-      flex: 1,
-      justifyContent: "center",
-      alignItems: "center",
-      backgroundColor: "lightgray",
-      marginBottom: "3%",
-      width: "50%",
-    },
-  
-    bottomRow: {
-      display: "grid",
-      gridTemplateColumns: "1fr 1fr",
-      gridGap: 0,
-      alignItems: "center",
-      padding: 10,
-      backgroundColor: "#c33",
-      width: "100%",
-      height: "20%",
-      /*
-      flex: 1,
-      justifyContent: "center",
-      alignItems: "center",
-      backgroundColor: "lightgray",
-      marginBottom: "3%",
-      width: "50%",
-      */
-    },
-  
-    text: {
-      alignItems: "center",
-      color: "white",
-      width: "80%",
-      marginLeft: 100,
-      fontSize: 20,
-    },
-  
-    navButton: {
-      backgroundColor: "#c33",
-      padding: 10,
-      borderRadius: 5,
-      alignItems: "center",
-    },
-  
-    ////Email
-    emailInput: {
-      borderWidth: 1,
-      borderColor: "#ccc",
-      borderRadius: 5,
-      padding: 10,
-      marginVertical: 10,
-      width: "80%",
-    },
-  
-    emailButton: {
-      backgroundColor: "#c33",
-      padding: 10,
-      borderRadius: 5,
-      alignItems: "center",
-      width: "80%",
-    },
-  
-    emailButtonText: {
-      color: "white",
-      fontWeight: "bold",
-      fontSize: 20,
-    },
-  
-    Email: {
-      flex: 1,
-      backgroundColor: "#fff",
-      alignItems: "center",
-      justifyContent: "center",
-      height: 200,
-      width: "50%",
-      marginLeft: 150,
-    },
-  
-    emailText: {
-      fontSize: 25,
-      marginBottom: 15,
-    },
-  
-    searchInput: {
-      height: 25,
-      borderColor: "white",
-      borderWidth: 1,
-      paddingLeft: 15,
-      backgroundColor: "white",
-      borderRadius: 8,
-      marginRight: 0,
-    },
-  
-    searchButton: {
-      /*background: "white",
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+    //use if you want to change the screen height
+    height: "150%",
+  },
+
+  textButtons: {
+    color: "white",
+    fontWeight: "bold",
+    fontSize: 20,
+  },
+
+  banner: {
+    //paddingTop: 20,
+    //paddingBottom: 20,
+    marginBottom: "3%",
+    display: "grid",
+    gridTemplateColumns: "2fr 2fr 2fr 2fr 2fr",
+    gridGap: 1,
+    alignItems: "center",
+  },
+
+  topRow: {
+    display: "grid",
+    gridTemplateColumns: "2fr 2fr 2fr 2fr 0.5fr 0.5fr",
+    gridGap: 10,
+    alignItems: "center",
+    padding: 10,
+    backgroundColor: "#c33",
+    width: "100%",
+    paddingTop: 0,
+    height: 110,
+  },
+
+  middleRow: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "lightgray",
+    marginBottom: "3%",
+    width: "50%",
+  },
+
+  bottomRow: {
+    display: "grid",
+    gridTemplateColumns: "1fr 1fr",
+    gridGap: 0,
+    alignItems: "center",
+    padding: 10,
+    backgroundColor: "#c33",
+    width: "100%",
+    height: "25%",
+  },
+
+  text: {
+    alignItems: "center",
+    color: "white",
+    width: "80%",
+    marginLeft: 100,
+    fontSize: 20,
+  },
+
+  navButton: {
+    backgroundColor: "#c33",
+    padding: 10,
+    borderRadius: 5,
+    alignItems: "center",
+  },
+
+  ////Email
+  emailInput: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 5,
+    padding: 10,
+    marginVertical: 10,
+    width: "80%",
+  },
+
+  emailButton: {
+    backgroundColor: "#c33",
+    padding: 10,
+    borderRadius: 5,
+    alignItems: "center",
+    width: "80%",
+  },
+
+  emailButtonText: {
+    color: "white",
+    fontWeight: "bold",
+    fontSize: 20,
+  },
+
+  Email: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+    height: 200,
+    width: "50%",
+    marginLeft: 150,
+  },
+
+  emailText: {
+    fontSize: 25,
+    marginBottom: 15,
+  },
+
+  searchInput: {
+    height: 25,
+    borderColor: "white",
+    borderWidth: 1,
+    paddingLeft: 15,
+    backgroundColor: "white",
+    borderRadius: 8,
+    marginRight: 0,
+  },
+
+  searchButton: {
+    /*background: "white",
       width: 175,
       height: 150,
       borderRadius: 0,
       marginLeft: 180,
       */
-      height: 25,
-      borderColor: "white",
-      borderWidth: 1,
-      width: 70,
-      backgroundColor: "",
-      borderRadius: 20,
-    },
-    listItem: {
-      flexDirection: 'row',
-      backgroundColor: "#f9f9f9",
-      padding: 10,
-      borderRadius: 5,
-      marginBottom: 10,
-    },
-  
-    listItemText: {
-      fontSize: 16,
-      color: "#000",
-    },
-  });
+    height: 25,
+    borderColor: "white",
+    borderWidth: 1,
+    width: 70,
+    backgroundColor: "",
+    borderRadius: 20,
+  },
+  listItem: {
+    flexDirection: "row",
+    backgroundColor: "#f9f9f9",
+    padding: 10,
+    borderRadius: 5,
+    marginBottom: 10,
+  },
+
+  listItemText: {
+    fontSize: 16,
+    color: "#000",
+  },
+});
