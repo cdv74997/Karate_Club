@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 
+
 import {
     StyleSheet,
     Text, 
@@ -15,7 +16,7 @@ function formatTime(timeString) {
 }
 
 export default function ClassInfo({ navigation, route }) {
-    const { item } = route.params;
+    const { item, selectedDate } = route.params;
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
@@ -38,8 +39,12 @@ return (
         <Text style={styles.value}>{item.instructor}</Text>
       </View>
       <View style={styles.infoContainer}>
+        <Text style={styles.label}>Day:</Text>
+        <Text style={styles.value}>{selectedDate.format('dddd')}</Text>
+      </View>
+      <View style={styles.infoContainer}>
         <Text style={styles.label}>Date:</Text>
-        <Text style={styles.value}>{item.day}</Text>
+        <Text style={styles.value}>{selectedDate.format('MMM D, YYYY')}</Text>
       </View>
       <View style={styles.infoContainer}>
         <Text style={styles.label}>Start Time:</Text>
@@ -77,6 +82,8 @@ return (
         >
             <Text style={styles.buttonText}>Submit</Text>
         </TouchableOpacity>
+        
+
     </View>
 );
 
@@ -119,7 +126,7 @@ const styles = StyleSheet.create({
         borderColor: "gray",
         borderWidth: 1,
         borderRadius: 5,
-        width: "80%",
+        width: "25%",
         marginBottom: 20,
         paddingHorizontal: 10
     },
@@ -127,5 +134,11 @@ const styles = StyleSheet.create({
         color: "white",
         fontWeight: "bold",
         textAlign: "center"
-    }
+    },
+    button: {
+      backgroundColor: "#4CAF50",
+      borderRadius: 5,
+      padding: 10
+  }
+  
 });

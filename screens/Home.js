@@ -227,7 +227,7 @@ export default function Home() {
               <Text>Past</Text>
             ) : (
               <TouchableOpacity
-                onPress={() => navigation.navigate("ClassInfo", { item })}
+                onPress={() => navigation.navigate("ClassInfo", { item, selectedDate })}
                 style={{
                   backgroundColor: "#007bff",
                   color: "white",
