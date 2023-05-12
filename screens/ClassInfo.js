@@ -1,4 +1,17 @@
 import React, { useState } from "react";
+import * as MailComposer from 'expo-mail-composer';
+
+import Confirmation from './Confirmation';
+
+const AWS = require('aws-sdk');
+AWS.config.update({
+  accessKeyId: 'YOUR_ACCESS_KEY_ID',
+  secretAccessKey: 'YOUR_SECRET_ACCESS_KEY',
+  region: 'YOUR_AWS_REGION',
+});
+const ses = new AWS.SES({ apiVersion: '2010-12-01' });
+
+
 
 
 import {
@@ -8,6 +21,10 @@ import {
     TouchableOpacity,
     View
 } from "react-native";
+
+
+//const DOMAIN = "sandbox95447eafc7ff4bf1a9a7dff1c094c4f7.mailgun.org";
+//const mg = mailgun({ apiKey: "08810b62d713dac6e81e8f359ce6edd8-6b161b0a-e8212d36", domain: DOMAIN })
 function formatTime(timeString) {
   const [hours, minutes] = timeString.split(':');
   const meridiem = hours >= 12 ? 'PM' : 'AM';
@@ -23,36 +40,61 @@ export default function ClassInfo({ navigation, route }) {
 
     
 
-const handleFormSubmit = () => {
-
+const handleFormSubmit = async () => {
+  try {
+    // Send email to host
+    
+    // Send email to user
+    const userMessage = {
+      recipients: [email],
+      subject: 'Karate Club Class Sign-Up Confirmation',
+      body: `
+        Hi ${firstName},
+        Thank you for signing up for ${item.name} with ${item.instructor} on ${selectedDate.format('dddd, MMM D, YYYY')}.
+        The class will be held from ${formatTime(item.start_time)} to ${formatTime(item.end_time)}.
+        We look forward to seeing you there!
+      `,
+      isHtml: false,
+    };
+    await MailComposer.composeAsync(userMessage);
+    // Clear form fields
+    //navigation.navigate("Confirmation", { item, selectedDate, firstName });
+    setFirstName("");
+    setLastName("");
+    setEmail("");
+    navigation.navigate("Confirmation", { item, selectedDate, firstName })
+  } catch (error) {
+    alert('Error sending email:', error);
+  }
 };
 
+
 return (
-    <View style={styles.container}>
-        <Text style={styles.heading}>Course Info</Text>
-      <View style={styles.infoContainer}>
-        <Text style={styles.label}>Class Name:</Text>
-        <Text style={styles.value}>{item.name}</Text>
-      </View>
-      <View style={styles.infoContainer}>
-        <Text style={styles.label}>Instructor:</Text>
-        <Text style={styles.value}>{item.instructor}</Text>
-      </View>
-      <View style={styles.infoContainer}>
-        <Text style={styles.label}>Day:</Text>
-        <Text style={styles.value}>{selectedDate.format('dddd')}</Text>
-      </View>
-      <View style={styles.infoContainer}>
-        <Text style={styles.label}>Date:</Text>
-        <Text style={styles.value}>{selectedDate.format('MMM D, YYYY')}</Text>
-      </View>
-      <View style={styles.infoContainer}>
-        <Text style={styles.label}>Start Time:</Text>
-        <Text style={styles.value}>{formatTime(item.start_time)}</Text>
-      </View>
-      <View style={styles.infoContainer}>
-        <Text style={styles.label}>End Time:</Text>
-        <Text style={styles.value}>{formatTime(item.end_time)}</Text>
+  <View style={styles.container}>
+  <Text style={styles.heading}>Course Info</Text>
+  <View style={styles.infoContainer}>
+    <Text style={[styles.label, { textAlign: 'right' }]}>Class Name:</Text>
+    <Text style={[styles.value, { textAlign: 'left' }]}>{item.name}</Text>
+  </View>
+  <View style={styles.infoContainer}>
+    <Text style={[styles.label, { textAlign: 'right' }]}>Instructor:</Text>
+    <Text style={[styles.value, { textAlign: 'left' }]}>{item.instructor}</Text>
+  </View>
+  <View style={styles.infoContainer}>
+    <Text style={[styles.label, { textAlign: 'right' }]}>Day:</Text>
+    <Text style={[styles.value, { textAlign: 'left' }]}>{selectedDate.format('dddd')}</Text>
+  </View>
+  <View style={styles.infoContainer}>
+    <Text style={[styles.label, { textAlign: 'right' }]}>Date:</Text>
+    <Text style={[styles.value, { textAlign: 'left' }]}>{selectedDate.format('MMM D, YYYY')}</Text>
+  </View>
+  <View style={styles.infoContainer}>
+    <Text style={[styles.label, { textAlign: 'right' }]}>Start Time:</Text>
+    <Text style={[styles.value, { textAlign: 'left' }]}>{formatTime(item.start_time)}</Text>
+  </View>
+  <View style={styles.infoContainer}>
+    <Text style={[styles.label, { textAlign: 'right' }]}>End Time:</Text>
+        <Text style={[styles.value, {textAlign: 'left'}]}>{formatTime(item.end_time)}</Text>
       </View>
         <Text style={styles.heading}>Confirm Appointment</Text>
         <TextInput
@@ -78,6 +120,7 @@ return (
         />
         <TouchableOpacity 
           style={styles.button}
+          
           onPress={handleFormSubmit}
         >
             <Text style={styles.buttonText}>Submit</Text>
@@ -112,12 +155,14 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         alignItems: "left",
         fontSize: 18,
+        flex: 1,
         textAlign: "left",
         
       },
       value: {
         marginLeft: 10,
         fontSize: 18,
+        flex: 1,
         textAlign: "left",
         paddingLeft: 10
       },

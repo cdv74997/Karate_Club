@@ -1,3 +1,4 @@
+require('dotenv').config()
 // const { Client } = require("pg");
 // const dbConnect =
 //
@@ -19,9 +20,10 @@
 // module.exports = config;
 
 const { Pool } = require("pg");
+console.log(process.env.DB_CONNECT);
 
 const pool = new Pool({
-  connectionString: "",
+  connectionString: process.env.DB_CONNECT,
 });
 
 module.exports = pool;

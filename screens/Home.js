@@ -53,6 +53,8 @@ export default function Home() {
     return dates;
   };
 
+  
+
   return (
     <View style={styles.container}>
       {/*this is where we will have the top row which will contain all the usefull infor like home, the logo, contact us, appointments */}
@@ -182,6 +184,8 @@ export default function Home() {
           </TouchableOpacity>
         ))}
       </ScrollView>
+      <ScrollView>
+      
       <FlatList
         data={fetchedData}
         renderItem={({ item }) => (
@@ -230,20 +234,25 @@ export default function Home() {
                 onPress={() => navigation.navigate("ClassInfo", { item, selectedDate })}
                 style={{
                   backgroundColor: "#007bff",
-                  color: "white",
+                  color: 'white',
                   paddingHorizontal: 10,
                   paddingVertical: 5,
                   borderRadius: 5,
                   marginLeft: 10,
                 }}
               >
-                <Text>Book</Text>
+                <Text
+                  style={{
+                    color: 'white',
+                  }} 
+                >Book</Text>
               </TouchableOpacity>
             )}
           </View>
         )}
         keyExtractor={(item) => item.id.toString()}
       />
+      </ScrollView>
 
       {/*this is where we have the bottom row where they can sign up for email and a lil about us page */}
       <View style={styles.bottomRow}>
