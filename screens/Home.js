@@ -1,6 +1,6 @@
 import moment from "moment";
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import ClassInfo from "./ClassInfo";
 
@@ -18,42 +18,80 @@ import {
 } from "react-native";
 
 function formatTime(timeString) {
-  const [hours, minutes] = timeString.split(":");
-  const meridiem = hours >= 12 ? "PM" : "AM";
-  const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
-  return `${formattedHours}:${minutes} ${meridiem}`;
+  // Function to format time in HH:mm format to HH:mm AM/PM format
+
+  const [hours, minutes] = timeString.split(":"); // Split the time string into hours and minutes
+  const meridiem = hours >= 12 ? "PM" : "AM"; // Determine whether it's AM or PM based on the hours
+  const formattedHours = hours % 12 === 0 ? 12 : hours % 12; // Format hours to 12-hour format
+  return `${formattedHours}:${minutes} ${meridiem}`; // Return formatted time string
 }
 
 export default function Home() {
+  // React component for the Home screen
+
   const navigation = useNavigation();
-  const [email, setEmail] = useState("");
-  const [selectedDate, setSelectedDate] = useState(moment());
-  const [fetchedData, setFetchedData] = useState(null);
-  //used for search
-  const [search, setSearch] = useState("");
+  const [email, setEmail] = useState(""); // State variable for email input
+  const [selectedDate, setSelectedDate] = useState(moment()); // State variable for selected date
+  const [fetchedData, setFetchedData] = useState(null); // State variable for fetched data
+
+  const loadCourses = async (date) => {
+    // Function to load courses for a specific date
+
+    try {
+      const dayNumber = date.weekday(); // Get the day number of the selected date
+      const response = await fetch(
+        `https://agile-chamber-00240.herokuapp.com/api/data/?day=${dayNumber}`
+      ); // Fetch data from the API endpoint based on the day number
+      const data = await response.json(); // Parse the response data
+      const sortedData = data.sort((a, b) => {
+        const startA = moment.duration(a.start_time); // Calculate the duration of start time
+        const startB = moment.duration(b.start_time); // Calculate the duration of start time
+        return startA - startB; // Sort the data based on start time duration
+      });
+      setFetchedData(sortedData); // Set the fetched and sorted data
+    } catch (error) {
+      console.error("Error:", error); // Handle any errors that occur during the fetch
+    }
+  }
+
+  const [search, setSearch] = useState(""); // State variable for search input
 
   const handleEmail = () => {
-    //do something with the email like send it to the database
+    // Function to handle email input
 
-    //reset the input field
+    // Do something with the email like send it to the database
+
+    // Reset the input field
     setEmail("");
   };
+
   const handleSearch = () => {
-    //do something here for the serach input
+    // Function to handle search input
+
+    // Do something here for the search input
     setSearch("");
-    console.log("sent serach");
+    console.log("sent search");
   };
+
   const generateDates = () => {
+    // Function to generate a list of dates
+
     const dates = [];
     const startDate = moment();
 
     for (let i = 0; i < 6; i++) {
-      dates.push(moment(startDate).add(i, "days"));
+      dates.push(moment(startDate).add(i, "days")); // Add each date to the dates array
     }
-    return dates;
+    return dates; // Return the array of dates
   };
 
-  
+  useEffect(() => {
+    // Run this effect when the component mounts
+
+    loadCourses(selectedDate); // Load courses for the selected date
+  }, []);
+
+
 
   return (
     <View style={styles.container}>
@@ -148,7 +186,7 @@ export default function Home() {
               try {
                 const dayNumber = date.weekday(); // Add this line to get the day number
                 const response = await fetch(
-                  `http://localhost:5000/api/data/?day=${dayNumber}` // Use the dayNumber here
+                  `https://agile-chamber-00240.herokuapp.com/api/data/?day=${dayNumber}` // Use the dayNumber here
                 );
                 const data = await response.json();
                 const sortedData = data.sort((a, b) => {

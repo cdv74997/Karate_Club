@@ -1,73 +1,55 @@
-import React, { useState } from "react";
-import * as MailComposer from 'expo-mail-composer';
-
-import Confirmation from './Confirmation';
-
-const AWS = require('aws-sdk');
-AWS.config.update({
-  accessKeyId: 'YOUR_ACCESS_KEY_ID',
-  secretAccessKey: 'YOUR_SECRET_ACCESS_KEY',
-  region: 'YOUR_AWS_REGION',
-});
-const ses = new AWS.SES({ apiVersion: '2010-12-01' });
-
-
-
+import React, { useState } from "react"; // Importing React and useState from the 'react' library
+import Confirmation from './Confirmation'; // Importing the 'Confirmation' component
 
 import {
-    StyleSheet,
-    Text, 
-    TextInput,
-    TouchableOpacity,
-    View
-} from "react-native";
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View
+} from "react-native"; // Importing necessary components from the 'react-native' library
 
-
-//const DOMAIN = "sandbox95447eafc7ff4bf1a9a7dff1c094c4f7.mailgun.org";
-//const mg = mailgun({ apiKey: "08810b62d713dac6e81e8f359ce6edd8-6b161b0a-e8212d36", domain: DOMAIN })
+// Function to format time in a specific way
 function formatTime(timeString) {
-  const [hours, minutes] = timeString.split(':');
-  const meridiem = hours >= 12 ? 'PM' : 'AM';
-  const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
-  return `${formattedHours}:${minutes} ${meridiem}`;
+  const [hours, minutes] = timeString.split(':'); // Splitting the time string into hours and minutes
+  const meridiem = hours >= 12 ? 'PM' : 'AM'; // Determining the meridiem (AM or PM)
+  const formattedHours = hours % 12 === 0 ? 12 : hours % 12; // Formatting the hours in 12-hour format
+  return `${formattedHours}:${minutes} ${meridiem}`; // Returning the formatted time string
 }
 
 export default function ClassInfo({ navigation, route }) {
-    const { item, selectedDate } = route.params;
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [email, setEmail] = useState("");
+  const { item, selectedDate } = route.params; // Extracting the course object and selected date from the route parameters
+  const [firstName, setFirstName] = useState(""); // Setting up state for the first name
+  const [lastName, setLastName] = useState(""); // Setting up state for the last name
+  const [email, setEmail] = useState(""); // Setting up state for the email
 
-    
-
-const handleFormSubmit = async () => {
-  try {
-    // Send email to host
-    
-    // Send email to user
-    const userMessage = {
-      recipients: [email],
-      subject: 'Karate Club Class Sign-Up Confirmation',
-      body: `
-        Hi ${firstName},
-        Thank you for signing up for ${item.name} with ${item.instructor} on ${selectedDate.format('dddd, MMM D, YYYY')}.
-        The class will be held from ${formatTime(item.start_time)} to ${formatTime(item.end_time)}.
-        We look forward to seeing you there!
-      `,
-      isHtml: false,
-    };
-    await MailComposer.composeAsync(userMessage);
-    // Clear form fields
-    //navigation.navigate("Confirmation", { item, selectedDate, firstName });
-    setFirstName("");
-    setLastName("");
-    setEmail("");
-    navigation.navigate("Confirmation", { item, selectedDate, firstName })
-  } catch (error) {
-    alert('Error sending email:', error);
-  }
-};
-
+  const handleFormSubmit = async () => { // Asynchronous function to handle form submission
+    try {
+      const response = await fetch('https://agile-chamber-00240.herokuapp.com/send-email', { // Sending a POST request to the specified URL
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json' // Setting the request header to indicate JSON data
+        },
+        body: JSON.stringify({ // Converting the data to JSON format
+          from: process.env.SMTP_HOST, // Sender's email address (retrieved from the environment)
+          to: [email], // Recipient's email address
+          subject: 'Registration for ' + item.name, // Email subject
+          body: `Hello, ${firstName}\nThis email confirms you have signed up for ${item.name} with instructor ${item.instructor}. The class will take place on ${selectedDate.format('dddd')}, ${selectedDate.format('dddd, MMM D, YYYY')} going from ${formatTime(item.start_time)} to ${formatTime(item.end_time)}` // Email body
+        })
+      });
+  
+      if (response.ok) { // If the response status is successful
+        setFirstName(""); // Clear the first name field
+        setLastName(""); // Clear the last name field
+        setEmail(""); // Clear the email field
+        navigation.navigate("Confirmation", { item, selectedDate, firstName }); // Navigate to the Confirmation screen with necessary data
+      } else {
+        alert('Failed to send email. Please try again later.'); // Show an alert if the email sending fails
+      }
+    } catch (error) {
+      alert('Error sending email:', error); // Show an alert if there is an error in sending the email
+    }
+  };
 
 return (
   <View style={styles.container}>
