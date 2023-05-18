@@ -1,32 +1,10 @@
-const { Client } = require('pg');
-const dbConnect = 'postgres://vjrezkqm:kLQQb4W5qcvm6LQ7bXmS_R9PIVoAKZLS@salt.db.elephantsql.com/vjrezkqm';
-;
+require('dotenv').config(); // Load environment variables from .env file
 
+const { Pool } = require("pg"); // Importing the Pool object from the pg module
 
-
-
-const config = new Client({
-  connectionString: dbConnect,
-  ssl: {
-    rejectUnauthorized: false
-  }
+const pool = new Pool({
+  connectionString: process.env.DB_CONNECT, // Setting the connection string for the PostgreSQL database
 });
 
-config.connect((err) => {
-  if (err) {
-    console.error('connection error', err.stack);
-  } else {
-    console.log('connected to database');
-  }
-});
-//const { Pool } = require('pg');
+module.exports = pool; // Exporting the pool object for use in other modules
 
-//const config1 = new Pool({
-//    user: process.env.DB_USER,
-//    password: process.env.DB_PASSWORD,
-//    host: process.env.DB_HOST,
-//    port: process.env.DB_PORT,
-//    database: process.env.DB_DATABASE,
-//  });
-
-module.exports = config;
